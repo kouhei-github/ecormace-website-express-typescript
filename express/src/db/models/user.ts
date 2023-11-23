@@ -1,77 +1,80 @@
-import { Sequelize, Model, DataTypes, BuildOptions } from 'sequelize';
-import sequelize from './database';
+import Address from './address'
+import {BelongsToMany, Column, Table, Model, DataType} from 'sequelize-typescript'
+import UserAddress from './user_addresses'
 
 export type UserI = {
-  firstName?: string | null,
-  lastName?: string | null,
-  email: string,
-  firstKana?: string | null,
-  lastKana?: string | null,
-  password: string,
-  sessionToken?: string | null,
+  firstName?: string | null
+  lastName?: string | null
+  email: string
+  firstKana?: string | null
+  lastKana?: string | null
+  password: string
+  sessionToken?: string | null
   nickName?: string | null
   salt?: string | null
 }
 
+@Table({ modelName: "user", underscored: true })
 class User extends Model implements UserI {
-  public id!: number
-  public firstName!: string | null
-  public lastName!: string | null
-  public firstKana!: string | null
-  public lastKana!: string | null
-  public email!: string
-  public password!: string
-  public sessionToken!: string | null
-  public nickName!: string | null
-  public salt!: string | null
-}
-
-User.init({
-  id: {
-    type: DataTypes.INTEGER.UNSIGNED,
+  @Column({
+    type: DataType.INTEGER.UNSIGNED,
     autoIncrement: true,
     primaryKey: true,
-  },
-  firstName: {
-    type: DataTypes.STRING,
-    allowNull: true,  // allowNull property set to true
-    field: "firstName",
-  },
-  lastName: {
-    type: DataTypes.STRING,
+  })
+  public id!: number
+
+  @Column( {type: DataType.STRING,allowNull: true, field: "firstName",})
+  public firstName!: string | null
+
+  @Column({
+    type: DataType.STRING,
     allowNull: true,  // allowNull property set to true
     field: "lastName",
-  },
-  email: DataTypes.STRING,
-  firstKana: {
-    type: DataTypes.STRING,
+  })
+  public lastName!: string | null
+
+  @Column({
+    type: DataType.STRING,
     allowNull: true,  // allowNull property set to true
     field: "firstKana",
-  },
-  lastKana: {
-    type: DataTypes.STRING,
+  })
+  public firstKana!: string | null
+
+  @Column({
+    type: DataType.STRING,
     allowNull: true,  // allowNull property set to true
     field: "lastKana",
-  },
-  password: DataTypes.STRING,
-  sessionToken: {
-    type: DataTypes.STRING,
+  })
+  public lastKana!: string | null
+
+  @Column(DataType.STRING)
+  public email!: string
+
+  @Column(DataType.STRING)
+  public password!: string
+
+  @Column({
+    type: DataType.STRING,
     allowNull: true,  // allowNull property set to true
     field: "sessionToken",
-  },
-  nickName: {
-    type: DataTypes.STRING,
+  })
+  public sessionToken!: string | null
+
+  @Column({
+    type: DataType.STRING,
     allowNull: true,  // allowNull property set to true
     field: "nickName",
-  },
-  salt: {
-    type: DataTypes.STRING,
+  })
+  public nickName!: string | null
+
+  @Column({
+    type: DataType.STRING,
     allowNull: true,  // allowNull property set to true
-  },
-}, {
-  sequelize,
-  modelName: 'user',
-  underscored: true,
-});
+  })
+  public salt!: string | null
+
+  @BelongsToMany(() => Address, () => UserAddress)
+  public addresses!: Address[];
+}
 
 export default User
