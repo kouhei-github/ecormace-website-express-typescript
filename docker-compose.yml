@@ -1,0 +1,49 @@
+version: '3.9'
+services:
+  db:
+    image: mysql:8
+    container_name: database-ecommerce-express-typescript # phpMyAdminサービスのPMA_HOSTSに設定する
+    environment:
+      MYSQL_ROOT_PASSWORD: ${ROOT_PASS}
+      MYSQL_DATABASE: ${DATABASE}
+      MYSQL_USER: ${USERNAME}
+      MYSQL_PASSWORD: ${USER_PASS}
+      TZ: 'Asia/Tokyo'
+      LC_ALL: 'ja_JP.UTF-8'
+      LANG: "ja_JP.UTF-8"
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    env_file:
+      - .env
+    volumes:
+      - ./container/db/data:/var/lib/mysql
+      - ./container/db/my.cnf:/etc/mysql/conf.d/my.cnf
+    ports:
+      - ${PORT}:3306
+    expose:
+      - ${PORT}
+
+  express:
+    image: ecommerce-express-typescript-image
+    container_name: ecommerce-express-typescript-container
+    build:
+      context: .
+      dockerfile: ./container/node/Dockerfile
+    tty: true
+    volumes:
+      - ./express:/app
+    ports:
+      - "8000:8000"
+    command: yarn start
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    env_file:
+      - ".env"
+    depends_on:
+      db:
+        condition: service_healthy
