@@ -1,5 +1,5 @@
 import Address from './address'
-import {BelongsToMany, Column, Table, Model, DataType} from 'sequelize-typescript'
+import {BelongsToMany, Column, Table, Model, DataType, PrimaryKey, AutoIncrement} from 'sequelize-typescript'
 import UserAddress from './user_addresses'
 
 export type UserI = {
@@ -16,11 +16,9 @@ export type UserI = {
 
 @Table({ modelName: "user", underscored: true })
 class User extends Model implements UserI {
-  @Column({
-    type: DataType.INTEGER.UNSIGNED,
-    autoIncrement: true,
-    primaryKey: true,
-  })
+  @PrimaryKey
+  @AutoIncrement
+  @Column(DataType.INTEGER.UNSIGNED)
   public id!: number
 
   @Column( {type: DataType.STRING,allowNull: true, field: "firstName",})
