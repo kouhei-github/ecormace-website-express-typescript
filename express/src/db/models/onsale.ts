@@ -1,4 +1,5 @@
-import { Column, Table, Model, DataType} from 'sequelize-typescript'
+import {Column, Table, Model, DataType, HasMany} from 'sequelize-typescript'
+import Clothe from './clothes'
 
 export type IOnSale = {
   percent: number
@@ -15,6 +16,9 @@ class OnSale extends Model implements IOnSale {
 
   @Column(DataType.INTEGER)
   public percent!: number
+
+  @HasMany(() => Clothe)
+  public clothes!: Clothe[];
 }
 
 export default OnSale

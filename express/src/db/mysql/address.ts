@@ -3,7 +3,7 @@ import User from '../models/user'
 
 export const createAddress = async (record: IAddress) => await Address.create(record)
 
-export const getAdressesAndUser = async () => {
+export const getAdrressesAndUser = async () => {
   return await Address.findAll({
     where: {},
     include: [{

@@ -1,5 +1,6 @@
-import {Column, Table, Model, DataType, ForeignKey, BelongsTo} from 'sequelize-typescript'
+import {Column, Table, Model, DataType, ForeignKey, BelongsTo, HasMany} from 'sequelize-typescript'
 import Designer from './designer'
+import Clothe from './clothes'
 
 export type IBrand = {
   name: string
@@ -31,6 +32,9 @@ class Brand extends Model implements IBrand {
 
   @BelongsTo(() => Designer)
   public designer!: Designer
+
+  @HasMany(() => Clothe)
+  public clothes!: Clothe[];
 }
 
 export default Brand

@@ -1,6 +1,5 @@
 import User, {UserI} from '../models/user'
 import Address from '../models/address'
-import {getAdressesAndUser} from './address'
 
 export const createUser = async (record: UserI):Promise<User> => await User.create(record)
 export const getUserByEmail = async (email: string):Promise<User | null> => await User.findOne({ where: { email: email } })
