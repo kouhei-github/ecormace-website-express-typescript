@@ -1,6 +1,10 @@
 import Address from './address'
 import {BelongsToMany, Column, Table, Model, DataType, PrimaryKey, AutoIncrement} from 'sequelize-typescript'
 import UserAddress from './user_addresses'
+import Clothe from './clothes'
+import UserPurchaseCloth from './user_purchase_clothe'
+import UserShoppingCartCloth from './user_shopping_cart_clothe'
+
 
 export type UserI = {
   firstName?: string | null
@@ -73,6 +77,12 @@ class User extends Model implements UserI {
 
   @BelongsToMany(() => Address, () => UserAddress)
   public addresses!: Address[];
+
+  @BelongsToMany(() => Clothe, () => UserPurchaseCloth)
+  public clothePurchase!: Clothe[]
+
+  @BelongsToMany(() => Clothe, () => UserShoppingCartCloth)
+  public clotheShoppingCart!: Clothe[]
 }
 
 export default User

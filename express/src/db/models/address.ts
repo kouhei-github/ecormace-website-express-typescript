@@ -1,6 +1,7 @@
 import User from './user'
-import {BelongsToMany, Column, Table, Model, DataType} from 'sequelize-typescript'
+import {BelongsToMany, Column, Table, Model, DataType, HasMany} from 'sequelize-typescript'
 import UserAddress from './user_addresses'
+import Purchase from './Purchase'
 
 export type IAddress = {
   pref: string
@@ -26,6 +27,9 @@ class Address extends Model implements IAddress{
 
   @BelongsToMany(() => User, () => UserAddress)
   public users!: User[];
+
+  @HasMany(() => Purchase)
+  public purchases!: Purchase[];
 }
 
 export default Address

@@ -1,7 +1,12 @@
-import {Column, Table, Model, DataType, ForeignKey, BelongsTo, AllowNull} from 'sequelize-typescript'
+import {Column, Table, Model, DataType, ForeignKey, BelongsTo, AllowNull, BelongsToMany} from 'sequelize-typescript'
 import Brand from './brand'
 import OnSale from './onsale'
 import Category from './category'
+import User from './user'
+import UserPurchaseCloth from './user_purchase_clothe'
+import UserShoppingCartCloth from './user_shopping_cart_clothe'
+import ImageCloth from './image_cloth'
+import Image from './image'
 
 export type IClothe = {
   name: string
@@ -72,6 +77,15 @@ class Clothe extends Model implements IClothe {
 
   @BelongsTo(() => Category)
   public category!: Category
+
+  @BelongsToMany(() => User, () => UserPurchaseCloth)
+  public userPurchases!: User[];
+
+  @BelongsToMany(() => User, () => UserShoppingCartCloth)
+  public userShoppingCarts!: User[];
+
+  @BelongsToMany(() => Image, () => ImageCloth)
+  public images!: Image[]
 }
 
 export default Clothe
